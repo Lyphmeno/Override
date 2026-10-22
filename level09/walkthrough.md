@@ -7,7 +7,7 @@ RELRO           STACK CANARY      NX            PIE             RPATH      RUNPA
 Partial RELRO   No canary found   NX enabled    PIE enabled     No RPATH   No RUNPATH   /home/users/level09/level09
 ```
 
-* We have a level09 executable and here is the [code](src/level09.c).
+* We have a *level09* executable and here is the [code](src/level09.c).
 * Looking at the code, we notice:
   - `handle_msg()` initializes a structure containing a message buffer, a username and a maximum message length.
   - `set_username()` copies our username into a 40-byte buffer.

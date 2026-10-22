@@ -5,8 +5,8 @@ RELRO           STACK CANARY      NX            PIE             RPATH      RUNPA
 Partial RELRO   Canary found      NX enabled    No PIE          No RPATH   No RUNPATH   /home/users/level03/level03
 ```
 
-*	Here we spawn with [level03](src/level03) executable
-* Looking at the [code](src/level03.c), we notice:
+*	We spawn with a *level03* executable and here is the [code](src/level03.c)
+* Looking at the code, we notice:
   - `main()` calls `test()` with our input and `322424845`.
   - `test()` calculates `322424845 - input` and passes the result to `decrypt()` if it matches one of the accepted cases.
   - `decrypt()` XORs **Q}|u`sfg~sf{}|a3** with the key.
@@ -37,3 +37,4 @@ Partial RELRO   Canary found      NX enabled    No PIE          No RPATH   No RU
   $ cd ../level04
   $ cat .pass
   kgv3tkEb9h2mLkRsPkXRfc2mHbjMxQzvb2FrgKkf
+  ```

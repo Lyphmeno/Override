@@ -5,7 +5,7 @@ RELRO           STACK CANARY      NX            PIE             RPATH      RUNPA
 No RELRO        No canary found   NX disabled   No PIE          No RPATH   No RUNPATH   /home/users/level05/level05
 ```
 
-*	We have the [level05](src/level05) executable and here is the [code](src/level05.c)
+*	We have the *level05* *executable and here is the [code](src/level05.c)
 * Looking at the code, we notice:
   - User input is converted from uppercase to lowercase `input[i] ^= 0x20;`.
   - `printf(input)` is vulnerable to a **format string attack**.
@@ -45,8 +45,9 @@ No RELRO        No canary found   NX disabled   No PIE          No RPATH   No RU
   (gdb) break fgets
   (gdb) run
   (gdb) p (char *)getenv("SHELLCODE")
+        0xffffd85b: "SHELLCODE=..."
   (gdb) x/20bx (char *)getenv("SHELLCODE")
-  0xffffd85b: "SHELLCODE=..."
+  [...]
   ```
   We chose `0xffffd869`, an address inside the NOP sled.
 

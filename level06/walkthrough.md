@@ -5,7 +5,7 @@ RELRO           STACK CANARY      NX            PIE             RPATH      RUNPA
 Partial RELRO   Canary found      NX enabled    No PIE          No RPATH   No RUNPATH   /home/users/level06/level06
 ```
 
-*	We have the [level06](src/level06) executable and here is the [code](src/level06.c)
+*	We have the *level06* executable and here is the [code](src/level06.c)
 * Looking at the code, we notice:
   - The program asks for a `login` and a `serial`.
   - The login must contain at least 6 characters.

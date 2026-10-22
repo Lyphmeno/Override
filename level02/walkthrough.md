@@ -6,8 +6,7 @@ RELRO           STACK CANARY      NX            PIE             RPATH      RUNPA
 No RELRO        No canary found   NX disabled   No PIE          No RPATH   No RUNPATH   /home/users/level02/level02
 ```
 
-*	We spawn with a [level02](src/level02) executable.
-*	We have the [codes](src/level02.c) clean version
+*	We spawn with a *level02* executable and here is the [code](src/level02.c)
 * Looking at the code, we notice:
   - The program reads the `40-byte` password from `/home/users/level03/.pass` and stores it on the stack.
   - Both username and password are read using `fgets()`.

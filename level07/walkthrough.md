@@ -5,7 +5,7 @@ RELRO           STACK CANARY      NX            PIE             RPATH      RUNPA
 Partial RELRO   Canary found      NX disabled   No PIE          No RPATH   No RUNPATH   /home/users/level07/level07
 ```
 
-*	We have the [level07](src/level07) executable and here is the [code](src/level07.c)
+*	We have the *level07* executable and here is the [code](src/level07.c)
 * The program manages an array of 100 integers with three commands:
   - `store`: write a number at a given index.
   - `read`: read a number at a given index.
@@ -42,7 +42,7 @@ Partial RELRO   Canary found      NX disabled   No PIE          No RPATH   No RU
   (gdb) run
   (gdb) up
   (gdb) info frame
-  Stack level 0, frame at 0xffffd300:
+  Stack level 1, frame at 0xffffd300:
   eip = 0x8048729 in main
   saved eip = 0xf7e45513
   ```

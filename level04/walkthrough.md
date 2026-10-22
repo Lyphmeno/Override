@@ -5,7 +5,7 @@ RELRO           STACK CANARY      NX            PIE             RPATH      RUNPA
 Partial RELRO   No canary found   NX disabled   No PIE          No RPATH   No RUNPATH   /home/users/level04/level04
 ```
 
-*	We have a [level04](src/level04) executable and here is the [code](src/level04.c)
+*	We have a *level04*  executable and here is the [code](src/level04.c)
 * Looking at the code, we notice:
   - `fork()` creates a child process, which handles the user input.
   - The parent uses `ptrace()` to monitor the child.

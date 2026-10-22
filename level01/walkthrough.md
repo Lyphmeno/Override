@@ -6,8 +6,7 @@ RELRO           STACK CANARY      NX            PIE             RPATH      RUNPA
 Partial RELRO   No canary found   NX disabled   No PIE          No RPATH   No RUNPATH   /home/users/level01/level01
 ```
 
-*	We spawn with a [level01](src/level01) executable.
-*	Here is the [code](src/level01.c):
+*	We spawn with a *level01* executable and here is the [code](src/level01.c)
 * The program asks for a username and a password:
   - The username must be `dat_wil`.
   - The password buffer is 64 bytes, but `fgets()` reads up to 100 bytes, allowing a buffer overflow.

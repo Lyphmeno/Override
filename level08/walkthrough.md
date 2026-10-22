@@ -6,7 +6,7 @@ RELRO           STACK CANARY      NX            PIE             RPATH      RUNPA
 Full RELRO      Canary found      NX disabled   No PIE          No RPATH   No RUNPATH   /home/users/level08/level08
 ```
 
-* We have a [level08](src/level08) executable and here is the [code](src/level08.c).
+* We have a *level08* executable and here is the [code](src/level08.c).
 * Looking at the code, we notice:
   - The program takes a filename as an argument.
   - It opens the file using `fopen()` and copies its contents into `./backups/`.

@@ -6,8 +6,7 @@ RELRO           STACK CANARY      NX            PIE             RPATH      RUNPA
 Partial RELRO   No canary found   NX enabled    No PIE          No RPATH   No RUNPATH   /home/users/level00/level00
 ```
 
-*	We spawn with a [level00](src/level00) executable.
-*	Here is the [code](src/level00.c):
+*	We spawn with a *level00* executable and here is the [code](src/level00.c)
 	```c
 	if (password == 0x149c)
 			system("/bin/sh");
