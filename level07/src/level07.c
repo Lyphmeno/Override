@@ -1,102 +1,80 @@
-int __cdecl store_number(int a1)
-{
-  unsigned int unum; // [esp+18h] [ebp-10h]
-  unsigned int v3; // [esp+1Ch] [ebp-Ch]
 
-  printf(" Number: ");
-  unum = get_unum();
-  printf(" Index: ");
-  v3 = get_unum();
-  if ( v3 == 3 * (v3 / 3) || HIBYTE(unum) == 183 )
-  {
-    puts(" *** ERROR! ***");
-    puts("   This index is reserved for wil!");
-    puts(" *** ERROR! ***");
-    return 1;
-  }
-  else
-  {
-    *(_DWORD *)(a1 + 4 * v3) = unum;
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+unsigned int get_unum(void); // Existing binary helper
+
+int store_number(unsigned int *data)
+{
+    printf(" Number: ");
+    unsigned int number = get_unum();
+
+    printf(" Index: ");
+    unsigned int index = get_unum();
+
+    if (index % 3 == 0 || ((number >> 8) & 0xff) == 0xb7)
+    {
+        puts(" *** ERROR! ***");
+        puts("   This index is reserved for wil!");
+        puts(" *** ERROR! ***");
+        return 1;
+    }
+
+    data[index] = number; // No bounds checking!
     return 0;
-  }
 }
 
-int __cdecl read_number(int a1)
+int read_number(unsigned int *data)
 {
-  int unum; // [esp+1Ch] [ebp-Ch]
+    printf(" Index: ");
+    unsigned int index = get_unum();
 
-  printf(" Index: ");
-  unum = get_unum();
-  printf(" Number at data[%u] is %u\n", unum, *(_DWORD *)(a1 + 4 * unum));
-  return 0;
+    printf(" Number at data[%u] is %u\n",
+           index, data[index]); // No bounds checking!
+
+    return 0;
 }
 
-int __cdecl main(int argc, const char **argv, const char **envp)
+int main(int argc, char **argv, char **envp)
 {
-  _BYTE v6[400]; // [esp+24h] [ebp-1B8h] BYREF
-  int number; // [esp+1B4h] [ebp-28h]
-  char s[4]; // [esp+1B8h] [ebp-24h] BYREF
-  int v9; // [esp+1BCh] [ebp-20h]
-  int v10; // [esp+1C0h] [ebp-1Ch]
-  int v11; // [esp+1C4h] [ebp-18h]
-  int v12; // [esp+1C8h] [ebp-14h]
-  unsigned int v13; // [esp+1CCh] [ebp-10h]
+    unsigned int data[100] = {0};
+    char command[20] = {0};
+    int status;
 
-  v13 = __readgsdword(0x14u);
-  number = 0;
-  *(_DWORD *)s = 0;
-  v9 = 0;
-  v10 = 0;
-  v11 = 0;
-  v12 = 0;
-  memset(v6, 0, sizeof(v6));
-  while ( *argv )
-  {
-    memset((void *)*argv, 0, strlen(*argv));
-    ++argv;
-  }
-  while ( *envp )
-  {
-    memset((void *)*envp, 0, strlen(*envp));
-    ++envp;
-  }
-  puts(
-    "----------------------------------------------------\n"
-    "  Welcome to wil's crappy number storage service!   \n"
-    "----------------------------------------------------\n"
-    " Commands:                                          \n"
-    "    store - store a number into the data storage    \n"
-    "    read  - read a number from the data storage     \n"
-    "    quit  - exit the program                        \n"
-    "----------------------------------------------------\n"
-    "   wil has reserved some storage :>                 \n"
-    "----------------------------------------------------\n");
-  while ( 1 )
-  {
-    printf("Input command: ");
-    number = 1;
-    fgets(s, 20, stdin);
-    s[strlen(s) - 1] = 0;
-    if ( !memcmp(s, "store", 5u) )
+    // Clear arguments and environment variables
+    for (int i = 0; argv[i]; i++)
+        memset(argv[i], 0, strlen(argv[i]));
+
+    for (int i = 0; envp[i]; i++)
+        memset(envp[i], 0, strlen(envp[i]));
+
+    puts("----------------------------------------------------");
+    puts("  Welcome to wil's crappy number storage service!");
+    puts("----------------------------------------------------");
+    puts(" Commands: store, read, quit");
+    puts("----------------------------------------------------");
+
+    while (1)
     {
-      number = store_number((int)v6);
-      goto LABEL_13;
+        printf("Input command: ");
+
+        if (!fgets(command, sizeof(command), stdin))
+            return 1;
+
+        command[strcspn(command, "\n")] = '\0';
+        status = 1;
+
+        if (strncmp(command, "store", 5) == 0)
+            status = store_number(data);
+        else if (strncmp(command, "read", 4) == 0)
+            status = read_number(data);
+        else if (strncmp(command, "quit", 4) == 0)
+            return 0;
+
+        if (status)
+            printf(" Failed to do %s command\n", command);
+        else
+            printf(" Completed %s command successfully\n", command);
     }
-    if ( !memcmp(s, "read", 4u) )
-    {
-      number = read_number((int)v6);
-      goto LABEL_13;
-    }
-    if ( !memcmp(s, "quit", 4u) )
-      return 0;
-    if ( number )
-      printf(" Failed to do %s command\n", s);
-    else
-      printf(" Completed %s command successfully\n", s);
-    *(_DWORD *)s = 0;
-    v9 = 0;
-    v10 = 0;
-    v11 = 0;
-    v12 = 0;
-  }
 }
