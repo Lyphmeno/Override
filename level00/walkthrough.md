@@ -8,6 +8,11 @@ Partial RELRO   No canary found   NX enabled    No PIE          No RPATH   No RU
 
 *	We spawn with a [level00](src/level00) executable.
 *	Here is the [code](src/level00.c):
+	```c
+	if (password == 0x149c)
+			system("/bin/sh");
+	```
+	Converting `0x149c` to decimal gives `5276`.
 *	Not much to talk about here, just a classic number check then spawning a shell :
 	```console
 	level00@OverRide:~$ ./level00 

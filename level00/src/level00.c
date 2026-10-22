@@ -1,18 +1,24 @@
-bool main(void)
+#include <stdio.h>
+#include <stdlib.h>
+
+int main(void)
 {
-  int local_14 [4];
-  
-  puts("***********************************");
-  puts("* \t     -Level00 -\t\t  *");
-  puts("***********************************");
-  printf("Password:");
-  __isoc99_scanf(&DAT_08048636,local_14);
-  if (local_14[0] != 0x149c) {
-    puts("\nInvalid Password!");
-  }
-  else {
+    int password;
+
+    puts("***********************************");
+    puts("*            -Level00 -           *");
+    puts("***********************************");
+
+    printf("Password:");
+    scanf("%d", &password);
+
+    if (password != 0x149c)
+    {
+        puts("\nInvalid Password!");
+        return 1;
+    }
+
     puts("\nAuthenticated!");
     system("/bin/sh");
-  }
-  return local_14[0] != 0x149c;
+    return 0;
 }
