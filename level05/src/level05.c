@@ -1,15 +1,19 @@
-int main(int argc, const char **argv, const char **envp)
-{
-	char s[100];
-	unsigned int i;
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
-	i = 0;
-	fgets(s, 100, stdin);
-	for ( i = 0; i < strlen(s); ++i )
-	{
-		if ( s[i] > 64 && s[i] <= 90 )
-			s[i] ^= 0x20u;
-	}
-	printf(s);
-	exit(0);
+int main(void)
+{
+    char input[100];
+
+    fgets(input, sizeof(input), stdin);
+
+    for (int i = 0; i < strlen(input); i++)
+    {
+        if (input[i] >= 'A' && input[i] <= 'Z')
+            input[i] ^= 0x20;
+    }
+
+    printf(input); // Format string vulnerability
+    exit(0);
 }
