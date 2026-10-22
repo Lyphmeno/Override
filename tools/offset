@@ -1,0 +1,21 @@
+#!/usr/bin/env python3
+pattern = ""
+for upper in "ABCDEFGHIJKLMNOPQRSTUVWXYZ":
+    for lower in "abcdefghijklmnopqrstuvwxyz":
+        for digit in "0123456789":
+            pattern += upper + lower + digit
+
+length = int(input('Pattern length: '))
+if not 4 <= length <= len(pattern):
+    print(f'Choose a length between 4 and {len(pattern)}.')
+    raise SystemExit(1)
+
+print('\n' + pattern[:length] + '\n')
+address = input('EIP address (hex): ')
+value = int(address, 16).to_bytes(4, 'little').decode('latin1')
+offset = pattern[:length].find(value)
+
+if offset == -1:
+    print('Offset not found in this pattern.')
+else:
+    print(f'Offset: {offset} bytes')
